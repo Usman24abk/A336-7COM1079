@@ -2,6 +2,9 @@
 library("tidyverse")
 library("scales")
 
+# Disable scientific notation globally
+options(scipen = 999)
+
 # Removing the rows containing NA values
 video_game_films_cleaned <- na.omit(video_game_films)
 
@@ -10,10 +13,13 @@ write_xlsx(video_game_films_cleaned, "video_film_games_cleaned.xlsx")
 
 # Plotting the histogram
 hist(video_game_films_cleaned$`Worldwide Box Office`,
-     main = "Worldwide Box Office",
+     main = "Histogram of Worldwide Box Office",
      xlab = "Worldwide Box Office (Million $)",
-     col  = "azure",
-     Probability = FALSE) #Frequency Scale
+     col = "azure",
+     probability = FALSE,)  # Frequency scale
+
+# Add grid lines to the plot
+grid()
 
 # Define the x-axis values for the curve
 x <- seq(min(video_game_films_cleaned$`Worldwide Box Office`),
@@ -35,3 +41,29 @@ yn <- yn * bin.size * length(video_game_films_cleaned$`Worldwide Box Office`)
 
 # Overlay the normal curve on the histogram
 lines(x, yn, col = "blue", lwd = 2)
+
+# Scatter plot
+plot(video_game_films_cleaned$`Rotten Tomatoes`, 
+     video_game_films_cleaned$`Worldwide Box Office`,
+     main = "Rotten Tomatoes vs Worldwide Box Office",
+     xlab = "Rotten Tomatoes (%)", 
+     ylab = "Worldwide Box Office (Million $)",
+     pch = 19, 
+     col = "black",
+     xlim = c(0, 85),  # Adjust x-axis limits
+     ylim = c(0, max(video_game_films_cleaned$`Worldwide Box Office`)))  # Adjust y-axis limits
+
+# Add custom y-axis with non-scientific notation and integer labels
+axis(2, at = seq(0, max(video_game_films_cleaned$`Worldwide Box Office`), by = 100),
+     labels = prettyNum(seq(0, max(video_game_films_cleaned$`Worldwide Box Office`), by = 100), big.mark = ","))
+
+# Add grid lines to the plot
+grid()
+
+
+# Fit a linear regression model
+model <- lm(`Worldwide Box Office` ~ `Rotten Tomatoes`, data = video_game_films_cleaned)
+
+# Add the regression line to the scatter plot
+abline(model, col = "blue",lwd = 2)
+
