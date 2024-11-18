@@ -2,8 +2,6 @@
 library("tidyverse")
 library("scales")
 
-# Disable scientific notation globally
-options(scipen = 999)
 
 # Removing the rows containing NA values
 video_game_films_cleaned <- na.omit(video_game_films)
@@ -50,12 +48,9 @@ plot(video_game_films_cleaned$`Rotten Tomatoes`,
      ylab = "Worldwide Box Office (Million $)",
      pch = 19, 
      col = "black",
-     xlim = c(0, 85),  # Adjust x-axis limits
+     xlim = c(0, 100),  # Adjust x-axis limits
      ylim = c(0, max(video_game_films_cleaned$`Worldwide Box Office`)))  # Adjust y-axis limits
 
-# Add custom y-axis with non-scientific notation and integer labels
-axis(2, at = seq(0, max(video_game_films_cleaned$`Worldwide Box Office`), by = 100),
-     labels = prettyNum(seq(0, max(video_game_films_cleaned$`Worldwide Box Office`), by = 100), big.mark = ","))
 
 # Add grid lines to the plot
 grid()
