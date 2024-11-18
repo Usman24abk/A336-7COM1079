@@ -62,3 +62,7 @@ model <- lm(`Worldwide Box Office` ~ `Rotten Tomatoes`, data = video_game_films_
 # Add the regression line to the scatter plot
 abline(model, col = "blue",lwd = 2)
 
+# Correlation Significant test
+cor.test(video_game_films_cleaned$`Worldwide Box Office`,
+         video_game_films_cleaned$`Rotten Tomatoes`,
+         method = "spearman")
